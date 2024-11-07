@@ -11,10 +11,10 @@ public class WheelOfFortune extends GuessingGame {
 
         public WheelOfFortuneGameState(String phrase) {
             this.phrase = phrase;
-            getHiddenPhrase();
             for(char c = 'a'; c < 'z'; c++) {
                 remainingGuesses.add(c);
             }
+            getHiddenPhrase();
         }
 
         /**
@@ -24,11 +24,17 @@ public class WheelOfFortune extends GuessingGame {
             StringBuilder hiddenPhrase = new StringBuilder(this.phrase);
             for(int i = 0; i < hiddenPhrase.length(); i++) {
                 char hiddenCharacter = hiddenPhrase.charAt(i);
-                if(!Character.isWhitespace(hiddenCharacter) && this.remainingGuesses.contains(hiddenCharacter)) {
+                if(!Character.isWhitespace(hiddenCharacter)
+                        && this.remainingGuesses.contains(Character.toLowerCase(hiddenCharacter))) {
                     hiddenPhrase.setCharAt(i, '*');
                 }
             }
             this.hiddenPhrase = hiddenPhrase.toString();
+        }
+
+        public Boolean correctGuess(WheelOfFortuneGuess guess) {
+            return this.phrase.indexOf(guess.value) != -1
+                    || this.phrase.indexOf(Character.toUpperCase(guess.value)) != -1;
         }
 
         /**
@@ -68,11 +74,11 @@ public class WheelOfFortune extends GuessingGame {
         public void processGuess(WheelOfFortuneGuess guess) {
             this.remainingGuesses.remove(guess.value);
             this.previousGuesses.add(guess.value);
-            if(this.phrase.indexOf(guess.value) == -1) {
-                this.lostGame = --this.numberOfGuesses == 0;
-            } else {
+            if (correctGuess(guess)) {
                 getHiddenPhrase();
                 this.wonGame = this.hiddenPhrase.indexOf('*') == -1;
+            } else {
+                this.lostGame = --this.numberOfGuesses == 0;
             }
         }
 
@@ -80,7 +86,8 @@ public class WheelOfFortune extends GuessingGame {
         public String toString() {
             StringBuilder sb = new StringBuilder();
             sb.append(this.numberOfGuesses).append(" guesses remain.").append("\n");
-            sb.append("The hidden phrase is ").append(this.hiddenPhrase).append("\n");
+            sb.append("The hidden phrase is ").append("\n");
+            sb.append(this.hiddenPhrase).append("\n");
             sb.append("Previous guesses are: ").append("\n");
             for(Character previousGuess : this.previousGuesses) {
                 sb.append(previousGuess).append(" ");
@@ -107,7 +114,7 @@ public class WheelOfFortune extends GuessingGame {
     private Integer nextPhrase = 0;
     private final List<WheelOfFortunePlayer> players = new ArrayList<>();
     private Integer nextPlayer = 0;
-    private WheelOfFortunePlayer activePlayer;
+    private WheelOfFortunePlayer activePlayer = null;
 
     private static List<String> getPhrases() {
         try {
@@ -118,6 +125,23 @@ public class WheelOfFortune extends GuessingGame {
         } catch(Exception exception) {
             System.out.println("EXCEPTION IN GETTING PHRASES: " + exception);
             return new ArrayList<>();
+        }
+    }
+
+    public static void main(String[] args) {
+        Game wheelOfFortune = new WheelOfFortune();
+        AllGamesRecord record = wheelOfFortune.playAll();
+        System.out.println("Average score: " + record.average());
+        System.out.println("3 highest scores: ");
+        for(GameRecord highGame : record.highGameList(3)) {
+            System.out.println("\t" + highGame);
+        }
+        for(String playerID : record.playerGameRecords.keySet()) {
+            System.out.println(playerID + "'s average score: " + record.average(playerID));
+            System.out.println(playerID + "'s 3 highest scores: ");
+            for(GameRecord highGame : record.highGameList(playerID, 3)) {
+                System.out.println("\t" + highGame);
+            }
         }
     }
 
@@ -161,21 +185,22 @@ public class WheelOfFortune extends GuessingGame {
 
     @Override
     protected Integer getScore(GameState gameState) {
-        return 0;
+        assert gameState instanceof WheelOfFortuneGameState;
+        return 10 - gameState.numberOfGuesses;
     }
 
     @Override
     public Boolean playNext() {
-        if(this.nextPhrase >= this.phrases.size()) {
-            if(this.nextPhrase < this.players.size()) {
+        if(this.nextPhrase < this.phrases.size()) {
+            return this.activePlayer.playNext();
+        } else {
+            if(this.nextPlayer < this.players.size()) {
                 this.nextPhrase = 0;
                 this.activePlayer = this.players.get(this.nextPlayer++);
                 return this.activePlayer.playNext();
             } else {
                 return false;
             }
-        } else {
-            return this.activePlayer.playNext();
         }
     }
 }
