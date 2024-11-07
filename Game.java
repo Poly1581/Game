@@ -31,30 +31,16 @@ public abstract class Game {
             return this.playerID;
         }
 
-        /**
-         * Compare method (compare by score)
-         * @param otherGameRecord the object to be compared.
-         * @return Difference in scores
-         */
         @Override
         public int compareTo(GameRecord otherGameRecord) {
             return this.score - otherGameRecord.score;
         }
 
-        /**
-         * Tostring method (include score and playerID)
-         * @return Stringified game record
-         */
         @Override
         public String toString() {
             return playerID + " scored " + score;
         }
 
-        /**
-         * Equals method
-         * @param other object to compare to
-         * @return Equality (true if equal, false otherwise)
-         */
         @Override
         public boolean equals(Object other) {
             if(other == null) {
@@ -151,6 +137,11 @@ public abstract class Game {
             return playerGameRecords.containsKey(playerID) ? highGameList(playerGameRecords.get(playerID), numberOfGames) : new ArrayList<>();
         }
     }
+
+    /**
+     * Play all games (while player wants to play)
+     * @return ALlGameSRecord containing all game records from the game
+     */
     public AllGamesRecord playAll() {
         AllGamesRecord gameRecords = new AllGamesRecord();
         while(playNext()) {
@@ -158,6 +149,16 @@ public abstract class Game {
         }
         return gameRecords;
     }
+
+    /**
+     * Play game
+     * @return record of the game
+     */
     public abstract GameRecord play();
+
+    /**
+     * Ask to play next game
+     * @return true to play next game, false otherwise
+     */
     public abstract Boolean playNext();
 }
