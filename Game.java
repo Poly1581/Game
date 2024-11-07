@@ -71,7 +71,7 @@ public abstract class Game {
 
         /**
          * Return highest games from a given list
-         * @param gameRecords list of game records to find highest scores from
+         * @param gameRecords list of game records to find the highest scores from
          * @param numberOfGames number of games to include in list
          * @return a list of the highest games from the gameRecords passed
          */
@@ -128,7 +128,7 @@ public abstract class Game {
         }
 
         /**
-         * Get highest scoring games from a given players games
+         * Get the highest scoring games from a given players games
          * @param playerID the player whose highest games are to be returned
          * @param numberOfGames the number of games to be returned (capped at size of games)
          * @return the highest games (ordered) from a given players games
