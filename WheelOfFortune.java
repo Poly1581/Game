@@ -75,6 +75,24 @@ public class WheelOfFortune extends GuessingGame {
                 this.wonGame = this.hiddenPhrase.indexOf('*') == -1;
             }
         }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append(this.numberOfGuesses).append(" guesses remain.").append("\n");
+            sb.append("The hidden phrase is ").append(this.hiddenPhrase).append("\n");
+            sb.append("Previous guesses are: ").append("\n");
+            for(Character previousGuess : this.previousGuesses) {
+                sb.append(previousGuess).append(" ");
+            }
+            sb.append("\n");
+            sb.append("Remaining guesses are: ").append("\n");
+            for(Character remainingGuess : this.remainingGuesses) {
+                sb.append(remainingGuess).append(" ");
+            }
+            sb.append("\n");
+            return sb.toString();
+        }
     }
 
     public static class WheelOfFortuneGuess extends Guess {
@@ -105,25 +123,28 @@ public class WheelOfFortune extends GuessingGame {
 
     public WheelOfFortune() {
         this.players.add(new WheelOfFortuneHumanPlayer());
+        this.activePlayer = this.players.get(this.nextPlayer++);
     }
 
     public WheelOfFortune(WheelOfFortunePlayer player) {
         this.players.add(player);
+        this.activePlayer = this.players.get(this.nextPlayer++);
     }
 
     public WheelOfFortune(List<WheelOfFortunePlayer> players) {
         this.players.addAll(players);
+        this.activePlayer = this.players.get(this.nextPlayer++);
     }
 
     @Override
     protected GameState initialGameState() {
-        return new WheelOfFortuneGameState(phrases.get(nextPhrase++));
+        return new WheelOfFortuneGameState(this.phrases.get(this.nextPhrase++));
     }
 
     @Override
     protected Guess getGuess(GameState gameState) {
         assert gameState instanceof WheelOfFortuneGameState;
-        return activePlayer.nextGuess((WheelOfFortuneGameState) gameState);
+        return this.activePlayer.nextGuess((WheelOfFortuneGameState) gameState);
     }
 
     @Override
@@ -135,7 +156,7 @@ public class WheelOfFortune extends GuessingGame {
 
     @Override
     protected String getPlayerID() {
-        return activePlayer.playerID();
+        return this.activePlayer.playerID();
     }
 
     @Override
@@ -145,6 +166,16 @@ public class WheelOfFortune extends GuessingGame {
 
     @Override
     public Boolean playNext() {
-        return activePlayer.playNext();
+        if(this.nextPhrase >= this.phrases.size()) {
+            if(this.nextPhrase < this.players.size()) {
+                this.nextPhrase = 0;
+                this.activePlayer = this.players.get(this.nextPlayer++);
+                return this.activePlayer.playNext();
+            } else {
+                return false;
+            }
+        } else {
+            return this.activePlayer.playNext();
+        }
     }
 }
