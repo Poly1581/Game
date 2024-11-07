@@ -114,7 +114,7 @@ public class WheelOfFortune extends GuessingGame {
     private Integer nextPhrase = 0;
     private final List<WheelOfFortunePlayer> players = new ArrayList<>();
     private Integer nextPlayer = 0;
-    private WheelOfFortunePlayer activePlayer = null;
+    private WheelOfFortunePlayer activePlayer;
 
     private static List<String> getPhrases() {
         try {

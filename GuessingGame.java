@@ -45,7 +45,7 @@ public abstract class GuessingGame extends Game {
 
     /**
      * Get player ID (either AI or person)
-     * @return
+     * @return player ID
      */
     protected abstract String getPlayerID();
 
