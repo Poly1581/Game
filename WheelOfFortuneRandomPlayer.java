@@ -5,6 +5,11 @@ public class WheelOfFortuneRandomPlayer implements WheelOfFortunePlayer {
     }
 
     @Override
+    public Boolean playNext() {
+        return false;
+    }
+
+    @Override
     public String playerID() {
         return "";
     }

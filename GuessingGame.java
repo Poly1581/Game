@@ -1,6 +1,6 @@
 public abstract class GuessingGame extends Game {
     public static class GameState {
-        public Integer numberOfGuesses;
+        public Integer numberOfGuesses = 10;
         public Boolean wonGame = false;
         public Boolean lostGame = false;
     }
