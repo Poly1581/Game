@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class Game {
     public static class GameRecord implements Comparable<GameRecord> {
@@ -68,13 +67,50 @@ public abstract class Game {
         }
     }
     public static class AllGamesRecord {
-        List<GameRecord> gameRecords;
+        List<GameRecord> allGameRecords;
+        Map<String, List<GameRecord>> playerGameRecords;
 
-        public AllGamesRecord() {
-            gameRecords = new ArrayList<>();
+        public static Double average(List<GameRecord> gameRecords) {
+            Double averageScore = 0.0;
+            for(GameRecord gameRecord : gameRecords) {
+                averageScore += gameRecord.getScore();
+            }
+            return averageScore / (double) gameRecords.size();
         }
 
+        public static List<GameRecord> highGameList(List<GameRecord> gameRecords, Integer numberOfGames) {
+            Collections.sort(gameRecords);
+            return gameRecords.subList(0, Math.min(gameRecords.size(), numberOfGames));
+        }
 
+        public AllGamesRecord() {
+            this.allGameRecords = new ArrayList<>();
+            this.playerGameRecords = new HashMap<>();
+        }
+
+        public void add(GameRecord gameRecord) {
+            this.allGameRecords.add(gameRecord);
+            if(!this.playerGameRecords.containsKey(gameRecord.getPlayerID())) {
+                this.playerGameRecords.put(gameRecord.getPlayerID(), new ArrayList<>());
+            }
+            this.playerGameRecords.get(gameRecord.getPlayerID()).add(gameRecord);
+        }
+
+        public Double average() {
+            return average(allGameRecords);
+        }
+
+        public Double average(String playerID) {
+            return playerGameRecords.containsKey(playerID) ? average(playerGameRecords.get(playerID)) : 0.0;
+        }
+
+        public List<GameRecord> highGameList(Integer numberOfGames) {
+            return highGameList(allGameRecords, numberOfGames);
+        }
+
+        public List<GameRecord> highGameList(String playerID, Integer numberOfGames) {
+            return playerGameRecords.containsKey(playerID) ? highGameList(playerGameRecords.get(playerID), numberOfGames) : new ArrayList<>();
+        }
     }
     public AllGamesRecord playAll() {
         return new AllGamesRecord();
