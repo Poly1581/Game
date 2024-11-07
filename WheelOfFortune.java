@@ -1,19 +1,37 @@
+import java.util.List;
 import java.util.Set;
 
 public class WheelOfFortune extends GuessingGame {
-    public class WheelOfFortuneGameState extends GameState {
+    public static class WheelOfFortuneGameState extends GameState {
         private String phrase;
         public String hiddenPhrase;
         public Set<Character> previousGuesses;
         public Set<Character> remainingGuesses;
     }
 
-    public class WheelOfFortuneGuess extends Guess {
+    public static class WheelOfFortuneGuess extends Guess {
         Character value;
 
         public WheelOfFortuneGuess(Character value) {
             this.value = value;
         }
+    }
+
+    private final List<String> phrases;
+    private Integer nextPhrase;
+    private final List<WheelOfFortunePlayer> players;
+    private Integer nextPlayer;
+
+    public WheelOfFortune() {
+
+    }
+
+    public WheelOfFortune() {
+
+    }
+
+    public WheelOfFortune() {
+
     }
 
     @Override
