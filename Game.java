@@ -10,7 +10,7 @@ public abstract class Game {
          * @param score the score of the game
          * @param playerID the player who played the game
          */
-        public GameRecord(Integer score, String playerID) {
+        public GameRecord(String playerID, Integer score) {
             this.score = score;
             this.playerID = playerID;
         }
