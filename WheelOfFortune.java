@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.util.*;
 
 public class WheelOfFortune extends GuessingGame {
-    public static class WheelOfFortuneGameState extends GameState {
+    protected static class WheelOfFortuneGameState extends GameState {
         private final String phrase;
         public String hiddenPhrase;
         public final List<Character> previousGuesses = new ArrayList<>();
@@ -102,7 +102,7 @@ public class WheelOfFortune extends GuessingGame {
         }
     }
 
-    public static class WheelOfFortuneGuess extends Guess {
+    protected static class WheelOfFortuneGuess extends Guess {
         public Character value;
 
         public WheelOfFortuneGuess(Character value) {

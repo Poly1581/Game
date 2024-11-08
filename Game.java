@@ -136,6 +136,36 @@ public abstract class Game {
         public List<GameRecord> highGameList(String playerID, Integer numberOfGames) {
             return playerGameRecords.containsKey(playerID) ? highGameList(playerGameRecords.get(playerID), numberOfGames) : new ArrayList<>();
         }
+
+        @Override
+        public String toString() {
+            StringBuilder string = new StringBuilder();
+            for(GameRecord gameRecord : allGameRecords) {
+                string.append(gameRecord);
+            }
+            return string.toString();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if(other == null) {
+                return false;
+            }
+            if(!(other instanceof AllGamesRecord)) {
+                return false;
+            }
+            for(GameRecord thisGameRecord : this.allGameRecords) {
+                if(!((AllGamesRecord) other).allGameRecords.contains(thisGameRecord)) {
+                    return false;
+                }
+            }
+            for(GameRecord otherGameRecord : ((AllGamesRecord) other).allGameRecords) {
+                if(!this.allGameRecords.contains(otherGameRecord)) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     /**
