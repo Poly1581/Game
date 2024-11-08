@@ -105,7 +105,6 @@ public class TrieBot {
                 bestGuess = c;
             }
         }
-        System.out.println(bestGuess);
         updateGuesses(bestGuess);
         return bestGuess;
     }

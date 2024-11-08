@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Mastermind extends GuessingGame {
-    protected static class MastermindGameState extends GameState {
+    public static class MastermindGameState extends GameState {
         private final String code;
         public final List<Character> colors = List.of('R', 'G', 'B', 'Y', 'O', 'P');
 
@@ -83,7 +83,7 @@ public class Mastermind extends GuessingGame {
         }
     }
 
-    protected static class MastermindGuess extends Guess {
+    public static class MastermindGuess extends Guess {
         public String value;
 
         public MastermindGuess(String value) {

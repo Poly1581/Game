@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.util.*;
 
 public class WheelOfFortune extends GuessingGame {
-    protected static class WheelOfFortuneGameState extends GameState {
+    public static class WheelOfFortuneGameState extends GameState {
         private final String phrase;
         public String hiddenPhrase;
         public final List<Character> previousGuesses = new ArrayList<>();
@@ -102,7 +102,7 @@ public class WheelOfFortune extends GuessingGame {
         }
     }
 
-    protected static class WheelOfFortuneGuess extends Guess {
+    public static class WheelOfFortuneGuess extends Guess {
         public Character value;
 
         public WheelOfFortuneGuess(Character value) {
@@ -129,26 +129,26 @@ public class WheelOfFortune extends GuessingGame {
     }
 
     public static void main(String[] args) {
-        System.out.println("PLAYER GAME:");
-        Game player = new WheelOfFortune(new WheelOfFortuneProbablePlayer());
-        AllGamesRecord playerRecord = player.playAll();
-        System.out.println("Average score: " + playerRecord.average());
+        System.out.println("AI GAME:");
+        Game ai = new WheelOfFortune(List.of(new WheelOfFortuneRandomPlayer(), new WheelOfFortuneProbablePlayer(), new WheelOfFortuneEntropicPlayer()));
+        AllGamesRecord AIRecord = ai.playAll();
+        System.out.println("Average score: " + AIRecord.average());
         System.out.println("3 highest scores: ");
-        for(GameRecord highGame : playerRecord.highGameList(3)) {
+        for(GameRecord highGame : AIRecord.highGameList(3)) {
             System.out.println("\t" + highGame);
         }
-        for(String playerID : playerRecord.playerGameRecords.keySet()) {
-            System.out.println(playerID + "'s average score: " + playerRecord.average(playerID));
+        for(String playerID : AIRecord.playerGameRecords.keySet()) {
+            System.out.println(playerID + "'s average score: " + AIRecord.average(playerID));
             System.out.println(playerID + "'s 3 highest scores: ");
-            for(GameRecord highGame : playerRecord.highGameList(playerID, 3)) {
+            for(GameRecord highGame : AIRecord.highGameList(playerID, 3)) {
                 System.out.println("\t" + highGame);
             }
         }
 
 
-        System.out.println("AI GAME:");
-        Game ai = new WheelOfFortune(List.of(new WheelOfFortuneRandomPlayer(), new WheelOfFortuneProbablePlayer(), new WheelOfFortuneEntropicPlayer()));
-        ai.playAll();
+        System.out.println("PLAYER GAME:");
+        Game player = new WheelOfFortune();
+        AllGamesRecord playerRecord = player.playAll();
         System.out.println("Average score: " + playerRecord.average());
         System.out.println("3 highest scores: ");
         for(GameRecord highGame : playerRecord.highGameList(3)) {
@@ -198,17 +198,19 @@ public class WheelOfFortune extends GuessingGame {
 
     @Override
     protected String getPlayerID() {
+        String test = this.activePlayer.playerID();
         return this.activePlayer.playerID();
     }
 
     @Override
     protected Integer getScore(GameState gameState) {
-        return 10 - gameState.numberOfGuesses;
+        return gameState.numberOfGuesses;
     }
 
     @Override
     public Boolean playNext() {
         if(this.nextPhrase < this.phrases.size()) {
+            this.activePlayer.reset();
             return this.activePlayer.playNext();
         } else {
             if(this.nextPlayer < this.players.size()) {

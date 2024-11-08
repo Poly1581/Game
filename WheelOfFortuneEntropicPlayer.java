@@ -13,12 +13,12 @@ public class WheelOfFortuneEntropicPlayer implements WheelOfFortunePlayer {
 
     @Override
     public Boolean playNext() {
-        return null;
+        return true;
     }
 
     @Override
     public String playerID() {
-        return "";
+        return "Entropic Player";
     }
 
     @Override

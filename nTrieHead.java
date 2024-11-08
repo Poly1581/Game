@@ -33,7 +33,7 @@ public class nTrieHead extends nTrie {
     private void loadWords() {
         BufferedReader reader = null;
         try {
-            String fileName = "..\\resources\\" + length + "words.txt";
+            String fileName = System.getProperty("user.dir") + "\\resources\\" + length + "words.txt";
             Path path = Paths.get(fileName);
             reader = Files.newBufferedReader(path);
         } catch (IOException | NullPointerException e) {
