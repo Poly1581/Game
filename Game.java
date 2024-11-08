@@ -33,7 +33,7 @@ public abstract class Game {
 
         @Override
         public int compareTo(GameRecord otherGameRecord) {
-            return this.score - otherGameRecord.score;
+            return otherGameRecord.score - this.score;
         }
 
         @Override

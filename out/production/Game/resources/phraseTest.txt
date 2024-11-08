@@ -1,0 +1,3 @@
+Average guesses per phrase: 5.377569806689168
+Passed phrases: 6402(98.22031297944154%)
+Failed phrases: 116(1.7796870205584534%)

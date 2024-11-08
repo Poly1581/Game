@@ -129,7 +129,7 @@ public class WheelOfFortune extends GuessingGame {
     }
 
     public static void main(String[] args) {
-        Game wheelOfFortune = new WheelOfFortune();
+        Game wheelOfFortune = new WheelOfFortune(new WheelOfFortuneProbablePlayer());
         AllGamesRecord record = wheelOfFortune.playAll();
         System.out.println("Average score: " + record.average());
         System.out.println("3 highest scores: ");
