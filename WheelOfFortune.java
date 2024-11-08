@@ -129,17 +129,35 @@ public class WheelOfFortune extends GuessingGame {
     }
 
     public static void main(String[] args) {
-        Game wheelOfFortune = new WheelOfFortune(new WheelOfFortuneProbablePlayer());
-        AllGamesRecord record = wheelOfFortune.playAll();
-        System.out.println("Average score: " + record.average());
+        System.out.println("PLAYER GAME:");
+        Game player = new WheelOfFortune(new WheelOfFortuneProbablePlayer());
+        AllGamesRecord playerRecord = player.playAll();
+        System.out.println("Average score: " + playerRecord.average());
         System.out.println("3 highest scores: ");
-        for(GameRecord highGame : record.highGameList(3)) {
+        for(GameRecord highGame : playerRecord.highGameList(3)) {
             System.out.println("\t" + highGame);
         }
-        for(String playerID : record.playerGameRecords.keySet()) {
-            System.out.println(playerID + "'s average score: " + record.average(playerID));
+        for(String playerID : playerRecord.playerGameRecords.keySet()) {
+            System.out.println(playerID + "'s average score: " + playerRecord.average(playerID));
             System.out.println(playerID + "'s 3 highest scores: ");
-            for(GameRecord highGame : record.highGameList(playerID, 3)) {
+            for(GameRecord highGame : playerRecord.highGameList(playerID, 3)) {
+                System.out.println("\t" + highGame);
+            }
+        }
+
+
+        System.out.println("AI GAME:");
+        Game ai = new WheelOfFortune(List.of(new WheelOfFortuneRandomPlayer(), new WheelOfFortuneProbablePlayer(), new WheelOfFortuneEntropicPlayer()));
+        ai.playAll();
+        System.out.println("Average score: " + playerRecord.average());
+        System.out.println("3 highest scores: ");
+        for(GameRecord highGame : playerRecord.highGameList(3)) {
+            System.out.println("\t" + highGame);
+        }
+        for(String playerID : playerRecord.playerGameRecords.keySet()) {
+            System.out.println(playerID + "'s average score: " + playerRecord.average(playerID));
+            System.out.println(playerID + "'s 3 highest scores: ");
+            for(GameRecord highGame : playerRecord.highGameList(playerID, 3)) {
                 System.out.println("\t" + highGame);
             }
         }
