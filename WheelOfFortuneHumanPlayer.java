@@ -1,8 +1,8 @@
 import java.util.Scanner;
 
 public class WheelOfFortuneHumanPlayer implements WheelOfFortunePlayer {
-    private String playerID;
-    private Scanner userInput = new Scanner(System.in);
+    private final String playerID;
+    private final Scanner userInput = new Scanner(System.in);
 
     public WheelOfFortuneHumanPlayer() {
         this.playerID = getPlayerID();
@@ -16,7 +16,7 @@ public class WheelOfFortuneHumanPlayer implements WheelOfFortunePlayer {
     @Override
     public WheelOfFortune.WheelOfFortuneGuess nextGuess(WheelOfFortune.WheelOfFortuneGameState gameState) {
         Character guess = null;
-        Boolean invalidGuess = true;
+        boolean invalidGuess = true;
         while(invalidGuess) {
             System.out.println(gameState);
             System.out.println("Enter your guess:");

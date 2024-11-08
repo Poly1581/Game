@@ -6,8 +6,8 @@ public class WheelOfFortune extends GuessingGame {
     public static class WheelOfFortuneGameState extends GameState {
         private final String phrase;
         public String hiddenPhrase;
-        public final Set<Character> previousGuesses = new HashSet<>();
-        public final Set<Character> remainingGuesses = new HashSet<>();
+        public final List<Character> previousGuesses = new ArrayList<>();
+        public final List<Character> remainingGuesses = new ArrayList<>();
 
         public WheelOfFortuneGameState(String phrase) {
             this.phrase = phrase;
@@ -103,7 +103,7 @@ public class WheelOfFortune extends GuessingGame {
     }
 
     public static class WheelOfFortuneGuess extends Guess {
-        Character value;
+        public Character value;
 
         public WheelOfFortuneGuess(Character value) {
             this.value = value;
@@ -185,7 +185,6 @@ public class WheelOfFortune extends GuessingGame {
 
     @Override
     protected Integer getScore(GameState gameState) {
-        assert gameState instanceof WheelOfFortuneGameState;
         return 10 - gameState.numberOfGuesses;
     }
 
