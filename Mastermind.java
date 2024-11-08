@@ -8,21 +8,31 @@ public class Mastermind extends GuessingGame {
         private final String code;
         public final List<Character> colors = List.of('R', 'G', 'B', 'Y', 'O', 'P');
 
+        /**
+         * Constructor - generate random code
+         */
         public MastermindGameState() {
             StringBuilder code = new StringBuilder();
             Random rand = new Random();
             rand.setSeed(System.currentTimeMillis());
-            while(code.length() < 4) {
+            while (code.length() < 4) {
                 code.append(colors.get(rand.nextInt(colors.size())));
             }
             this.code = code.toString();
         }
 
+        /**
+         * Count number of exact matches between code and guess and remove them by setting to *
+         *
+         * @param code  the code to be guessed
+         * @param guess the guess to compare to the code
+         * @return the number of exact matches between code and guess
+         */
         public static Integer countExact(StringBuilder code, StringBuilder guess) {
             assert code.length() == guess.length();
             int numberOfExacts = 0;
-            for(int i = 0; i < guess.length(); i++) {
-                if(code.charAt(i) == guess.charAt(i)) {
+            for (int i = 0; i < guess.length(); i++) {
+                if (code.charAt(i) == guess.charAt(i)) {
                     numberOfExacts++;
                     code.setCharAt(i, '*');
                     guess.setCharAt(i, '*');
@@ -31,14 +41,21 @@ public class Mastermind extends GuessingGame {
             return numberOfExacts;
         }
 
+        /**
+         * Count the number of partial matches between code and guess after counting exact matches
+         *
+         * @param code  the code to be guessed
+         * @param guess the guess to compare to the code
+         * @return the number of partial matches between code and guess
+         */
         public static Integer countPartials(StringBuilder code, StringBuilder guess) {
             assert code.length() == guess.length();
             int numberOfPartials = 0;
-            for(int i = 0; i < guess.length(); i++) {
+            for (int i = 0; i < guess.length(); i++) {
                 char guessCharacter = guess.charAt(i);
-                for(int j = 0; j < code.length(); j++) {
+                for (int j = 0; j < code.length(); j++) {
                     char codeCharacter = code.charAt(j);
-                    if(guessCharacter == codeCharacter) {
+                    if (guessCharacter == codeCharacter) {
                         numberOfPartials++;
                         guess.setCharAt(i, '*');
                         code.setCharAt(i, '*');
@@ -48,7 +65,11 @@ public class Mastermind extends GuessingGame {
             return numberOfPartials;
         }
 
-
+        /**
+         * Process the guess by counting exacts and partials then printing result and updating won game and lost game
+         *
+         * @param guess the guess to compare to the code
+         */
         public void processGuess(MastermindGuess guess) {
             StringBuilder codeSB = new StringBuilder(this.code);
             StringBuilder guessSB = new StringBuilder(guess.value);
@@ -70,8 +91,8 @@ public class Mastermind extends GuessingGame {
         }
     }
 
-    private Scanner userInput = new Scanner(System.in);
-    private String playerID;
+    private final Scanner userInput = new Scanner(System.in);
+    private final String playerID;
 
     public Mastermind() {
         System.out.println("Enter your player ID:");
@@ -93,6 +114,10 @@ public class Mastermind extends GuessingGame {
         return new MastermindGameState();
     }
 
+    /**
+     * Prompt player for guess
+     * @param gameState The current gamestate (for printing colors)
+     */
     protected static void promptGuess(GameState gameState) {
         assert gameState instanceof MastermindGameState;
         System.out.println(gameState.numberOfGuesses + " guesses remain.");
@@ -103,6 +128,12 @@ public class Mastermind extends GuessingGame {
         System.out.println();
     }
 
+    /**
+     * Check if a guess only contains colors in the gameState
+     * @param gameState the current gamestate
+     * @param guess the guess to check for erroneous letters
+     * @return
+     */
     protected static Boolean onlyColors(MastermindGameState gameState, String guess) {
         for(int i = 0; i < guess.length(); i++) {
             if(!gameState.colors.contains(guess.charAt(i))) {
