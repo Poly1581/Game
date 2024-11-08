@@ -8,6 +8,10 @@ public class WheelOfFortuneHumanPlayer implements WheelOfFortunePlayer {
         this.playerID = getPlayerID();
     }
 
+    /**
+     * Ask player for their playerid and store (to avoid asking everytime)
+     * @return the entered player ID
+     */
     private String getPlayerID() {
         System.out.println("Enter your player ID:");
         return this.userInput.next();
