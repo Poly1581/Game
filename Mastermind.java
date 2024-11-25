@@ -53,13 +53,11 @@ public class Mastermind extends GuessingGame {
             int numberOfPartials = 0;
             for (int i = 0; i < guess.length(); i++) {
                 char guessCharacter = guess.charAt(i);
-                for (int j = 0; j < code.length(); j++) {
-                    char codeCharacter = code.charAt(j);
-                    if (guessCharacter == codeCharacter) {
-                        numberOfPartials++;
-                        guess.setCharAt(i, '*');
-                        code.setCharAt(i, '*');
-                    }
+                int matchIndex = code.indexOf(String.valueOf(guessCharacter));
+                if(matchIndex != -1) {
+                    numberOfPartials++;
+                    guess.setCharAt(i, '*');
+                    code.setCharAt(matchIndex, '*');
                 }
             }
             return numberOfPartials;
@@ -146,21 +144,19 @@ public class Mastermind extends GuessingGame {
     @Override
     protected Guess getGuess(GameState gameState) {
         assert gameState instanceof MastermindGameState;
-        String guess;
+        String guess = "";
         Boolean invalidGuess = true;
-        do {
+        while(invalidGuess) {
             promptGuess(gameState);
-            guess = userInput.next().toUpperCase().substring(0,4);
+            guess = userInput.next().toUpperCase();
             if(guess.length() != 4) {
                 System.out.println("Your guess (" + guess + ") is not 4 letters, please try again.");
-                continue;
-            }
-            if(!onlyColors((MastermindGameState) gameState, guess)) {
+            } else if(!onlyColors((MastermindGameState) gameState, guess)) {
                 System.out.println("Your guess contains letters other than the defined colors, please try again");
-                continue;
+            } else {
+                invalidGuess = false;
             }
-            invalidGuess = false;
-        } while(invalidGuess);
+        }
         return new MastermindGuess(guess);
     }
 
